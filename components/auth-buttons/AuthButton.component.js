@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { useState } from "react";
-import Signin from "../signin";
-import SignUp from "../signup";
+import Signin from "./signin";
+import SignUp from "./signup";
 
 const AuthButton = () => {
   const [button, setButton] = useState("signup");
@@ -16,7 +15,7 @@ const AuthButton = () => {
               : "bg-gray-100 p-3 w-1/2 rounded"
           }
         >
-          <Link href="/signup">Sign Up</Link>
+          Sign Up
         </button>
 
         <button
@@ -27,7 +26,7 @@ const AuthButton = () => {
               : "bg-gray-100 p-3 w-1/2 rounded"
           }
         >
-          <Link href="/signin">Sign In</Link>
+          Sign In
         </button>
       </div>
       {button === "signin" ? <Signin /> : <SignUp />}

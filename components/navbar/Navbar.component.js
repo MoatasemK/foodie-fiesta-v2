@@ -11,16 +11,12 @@ const Navbar = () => {
             Home
           </p>
         </Link>
-        <Link href="">
+        <Link href="/auth">
           <p className="text-green-500 hover:text-green-600 text-lg px-3 cursor-pointer">
             Sign Up
           </p>
         </Link>
-        <Link href="">
-          <p className="text-green-500 hover:text-green-600 text-lg px-3 cursor-pointer">
-            Login
-          </p>
-        </Link>
+
         <Link href="">
           <Image
             src="/images.png"
