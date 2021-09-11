@@ -25,8 +25,8 @@ const Navbar = () => {
           <Image
             src="/images.png"
             className="rounded-full"
-            height="40"
-            width="40"
+            height="35"
+            width="35"
           />
         </Link>
       </div>
