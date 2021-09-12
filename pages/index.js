@@ -6,9 +6,9 @@ export default function Home() {
       <div className="text-center py-3">
         <input
           placeholder="Search"
-          className="py-3 px-6 rounded w-1/3 shadow-md"
+          className="py-3 px-6 rounded-tl rounded-bl w-1/3 shadow-md focus:outline-none"
         />
-        <button className="bg-green-500 text-white text-lg py-2 rounded shadow-md focus:outline-none px-4">
+        <button className="bg-green-500 text-white rounded-tr rounded-br text-md h-100 py-3 shadow-md  px-6">
           Search
         </button>
       </div>

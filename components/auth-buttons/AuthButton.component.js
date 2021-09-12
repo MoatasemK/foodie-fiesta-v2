@@ -12,7 +12,7 @@ const AuthButton = () => {
           className={
             button === "signup"
               ? "bg-green-500 p-3 w-1/2 text-white shadow-md rounded"
-              : "bg-gray-100 p-3 w-1/2 rounded"
+              : "bg-gray-200 p-3 w-1/2 rounded"
           }
         >
           Sign Up
@@ -23,7 +23,7 @@ const AuthButton = () => {
           className={
             button === "signin"
               ? "bg-green-500 p-3 w-1/2 text-white shadow-md rounded"
-              : "bg-gray-100 p-3 w-1/2 rounded"
+              : "bg-gray-200 p-3 w-1/2 rounded"
           }
         >
           Sign In
