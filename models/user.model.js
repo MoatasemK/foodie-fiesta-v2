@@ -11,9 +11,9 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please enter your email address"],
       unique: true,
     },
-    channelName: {
+    username: {
       type: String,
-      required: [true, "Please enter your channel Name"],
+      required: [true, "Please enter your username"],
       unique: true,
       trim: true,
     },

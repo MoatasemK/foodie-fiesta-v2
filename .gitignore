@@ -11,6 +11,10 @@
 
 config.env
 
+./next.config.js
+/next.config.js
+next.config.js
+
 # testing
 /coverage
 
