@@ -15,7 +15,7 @@ const SignUp = () => {
     password: "",
   });
 
-  const { email, password } = user;
+  const { name, email, password } = user;
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

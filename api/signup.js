@@ -26,7 +26,6 @@ router.get("/:username", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log(req.body);
   const { username, name, email, password } = req.body;
 
   try {

@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const auth = require("../middleware/auth.middleware");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -36,6 +37,21 @@ router.post("/", async (req, res) => {
         res.status(200).json(token);
       }
     );
+  } catch (err) {
+    console.log(err);
+    console.log("server error");
+  }
+});
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(400).send("Error");
+    }
+
+    res.status(200).json({ user });
   } catch (err) {
     console.log(err);
     console.log("server error");
