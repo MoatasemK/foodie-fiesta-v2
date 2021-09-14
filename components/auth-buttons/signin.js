@@ -1,10 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  AiOutlineUser,
-  AiFillEye,
-  AiFillEyeInvisible,
-  AiFillLock,
-} from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible, AiFillLock } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 

@@ -4,6 +4,7 @@ import {
   AiFillEye,
   AiFillEyeInvisible,
   AiFillLock,
+  AiOutlineLoading,
 } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -19,6 +20,13 @@ const SignUp = () => {
     password: "",
   });
 
+  useEffect(() => {
+    const isUser = Object.values({ name, email, password }).every((item) =>
+      Boolean(item)
+    );
+    isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
+  }, [user]);
+
   const { name, email, password } = user;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +41,8 @@ const SignUp = () => {
   const [usernameLoading, setusernameLoading] = useState(false);
   const [usernameAvailable, setusernameAvailable] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const [error, setError] = useState("");
 
@@ -183,8 +193,17 @@ const SignUp = () => {
 
         <button
           type="submit"
+          disabled={submitDisabled || !usernameAvailable}
           className="bg-green-500 py-1 px-2 mt-3 rounded shadow-md text-white text-lg block w-full"
         >
+          {formLoading && (
+            <span className="absolute right-0 inset-y-0 flex items-center pr-3">
+              <AiOutlineLoading
+                className="h-5 w-5 text-gray-100 animate-spin"
+                aria-hidden="true"
+              />
+            </span>
+          )}
           Sign Up
         </button>
       </form>

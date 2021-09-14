@@ -17,6 +17,17 @@ const Navbar = () => {
           </p>
         </Link>
 
+        <Link href="/create">
+          <p className="text-green-500 hover:text-green-600 text-lg px-3 cursor-pointer">
+            Create
+          </p>
+        </Link>
+        <Link href="/create">
+          <p className="text-green-500 hover:text-green-600 text-lg px-3 cursor-pointer">
+            Dashboard
+          </p>
+        </Link>
+
         <Link href="">
           <Image
             src="/images.png"
