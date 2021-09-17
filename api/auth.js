@@ -8,7 +8,9 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
   if (password.length < 6) {
-    return res.status(400).send("Password must be atleast 6 characters long");
+    return res
+      .status(400)
+      .json({ msg: "Password must be atleast 6 characters long" });
   }
   try {
     let user = await User.findOne({ email: email.toLowerCase() }).select(
@@ -16,12 +18,12 @@ router.post("/", async (req, res) => {
     );
 
     if (!user) {
-      return res.status(401).send("Invalid Credentials");
+      return res.status(401).json({ msg: "Invalid Credentials" });
     }
 
     const isPassword = await bcrypt.compare(password, user.password);
     if (!isPassword) {
-      return res.status(401).send("Invalid Credentials");
+      return res.status(401).json({ msg: "Invalid Credentials" });
     }
 
     const payload = { userId: user._id };
@@ -40,6 +42,7 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     console.log("server error");
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
@@ -48,13 +51,16 @@ router.get("/", auth, async (req, res) => {
     const user = await User.findById(req.userId);
 
     if (!user) {
-      return res.status(400).send("Error");
+      return res.status(400).json({
+        msg: "Please login first",
+      });
     }
 
     res.status(200).json({ user });
   } catch (err) {
     console.log(err);
     console.log("server error");
+    res.status(500).json({ msg: "Server error" });
   }
 });
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Router from "next/router";
 import cookie from "js-cookie";
+import catchErrors from "./error.utils";
 
 export const registerUser = async (
   { name, username, email, password },
@@ -8,7 +9,6 @@ export const registerUser = async (
   setLoading,
   toast
 ) => {
-  setLoading(true);
   try {
     const res = await axios.post(`http://localhost:3000/api/signup`, {
       name,
@@ -21,9 +21,9 @@ export const registerUser = async (
     toast.info("Sign up successful");
     Router.push("/");
   } catch (error) {
-    console.log("error");
-    setError(error.message);
-    toast.error(error.message);
+    const errorMsg = catchErrors(error);
+    setError(errorMsg);
+    toast.error(errorMsg);
   }
   setLoading(false);
 };
@@ -34,8 +34,6 @@ export const loginUser = async (
   setLoading,
   toast
 ) => {
-  setLoading(true);
-
   try {
     const res = await axios.post(`http://localhost:3000/api/auth`, {
       email,
@@ -46,9 +44,9 @@ export const loginUser = async (
 
     Router.push("/");
   } catch (error) {
-    console.log("error");
-    setError(error.message);
-    toast.error(error.message);
+    const errorMsg = catchErrors(error);
+    setError(errorMsg);
+    toast.error(errorMsg);
   }
 
   setLoading(false);
@@ -56,6 +54,15 @@ export const loginUser = async (
 
 const setToken = (token) => {
   cookie.set("token", token);
+};
+
+export const redirectUser = (ctx, location) => {
+  if (ctx.req) {
+    ctx.res.writeHead(302, { Location: location });
+    ctx.res.end();
+  } else {
+    Router.push(location);
+  }
 };
 
 export const logoutUser = () => {

@@ -12,14 +12,16 @@ router.get("/:username", async (req, res) => {
   const username = req.params.username;
 
   try {
-    if (username.length < 1) return res.status(401).send("Invalid");
-    if (!usernameRegex.test(username)) return res.status(401).send("Invalid");
+    if (username.length < 1) return res.status(401).json({ msg: "Invalid" });
 
-    const user = await User.find({ username: username.toLowerCase() });
+    if (!usernameRegex.test(username))
+      return res.status(401).json({ msg: "Invalid" });
+
+    const user = await User.findOne({ username: username.toLowerCase() });
 
     if (user) return res.status(401).send("username already taken");
 
-    return res.status(200).send("Available");
+    return res.status(200).json({ msg: "Username available" });
   } catch (err) {
     console.log(err);
   }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import {
   AiOutlineUser,
@@ -5,13 +6,17 @@ import {
   AiFillEyeInvisible,
   AiFillLock,
   AiOutlineLoading,
+  AiOutlineCheckCircle,
 } from "react-icons/ai";
+import { CgDanger } from "react-icons/cg";
+import { HiOutlineDotsCircleHorizontal } from "react-icons/hi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 import { registerUser } from "../../utils/auth.utils";
 
 const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+let cancel;
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -41,16 +46,49 @@ const SignUp = () => {
   const [usernameLoading, setusernameLoading] = useState(false);
   const [usernameAvailable, setusernameAvailable] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const [error, setError] = useState("");
+
+  const checkUsername = async () => {
+    setusernameLoading(true);
+
+    try {
+      cancel && cancel();
+
+      const CancelToken = axios.CancelToken;
+      const res = await axios.get(
+        `http://localhost:3000/api/signup/${username}`,
+        {
+          cancelToken: new CancelToken((canceler) => {
+            cancel = canceler;
+          }),
+        }
+      );
+
+      if (error !== null) setError(null);
+      console.log(res.data.msg);
+      if (res.data.msg === "Username available") {
+        setusernameAvailable(true);
+        setUser((prevState) => ({ ...prevState, username }));
+      }
+    } catch (error) {
+      setusernameAvailable(false);
+      setError("Username not available");
+    }
+    setusernameLoading(false);
+  };
+
+  useEffect(() => {
+    username === "" ? setusernameAvailable(false) : checkUsername();
+  }, [username]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Password and confirm password must be same");
     } else {
+      setFormLoading(true);
       await registerUser(
         { name, email, password, username },
         setError,
@@ -78,16 +116,30 @@ const SignUp = () => {
           />
         </label>
 
-        <label
-          htmlFor="username"
-          className="relative text-gray-400 focus-within:text-gray-400 block"
-        >
-          <AiOutlineUser className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
+        <div className="mt-1 relative rounded-md shadow-sm">
+          <div className="absolute inset-y-0 left-0 pl-1 flex items-center pointer-events-none">
+            {usernameLoading || username === "" ? (
+              <HiOutlineDotsCircleHorizontal
+                className={`h-5 w-5 text-gray-400 ${
+                  usernameLoading && "animate-spin"
+                }`}
+                aria-hidden="true"
+              />
+            ) : username !== "" && usernameAvailable ? (
+              <AiOutlineCheckCircle className="h-5 w-5 text-gray-400 text-green-400" />
+            ) : (
+              <CgDanger className="h-5 w-5 text-gray-400 text-red-400" />
+            )}
+          </div>
           <input
             type="text"
-            className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
-            placeholder="Username"
             name="username"
+            id="username"
+            className={`bg-gray-200  text-gray-400 py-2 px-7 w-full rounded my-2 focus:outline-none ${
+              username !== "" && !usernameAvailable ? "bg-red-100" : ""
+            }`}
+            placeholder="something_legendary"
+            value={username}
             onChange={(e) => {
               setusername(e.target.value);
               if (usernameRegex.test(e.target.value)) {
@@ -96,9 +148,13 @@ const SignUp = () => {
                 setusernameAvailable(false);
               }
             }}
-            value={username}
           />
-        </label>
+        </div>
+        {username !== "" && !usernameLoading && !usernameAvailable && (
+          <small className="text-xs text-red-600">
+            This username is invalid or not available
+          </small>
+        )}
 
         <label
           htmlFor="email"
@@ -194,7 +250,7 @@ const SignUp = () => {
         <button
           type="submit"
           disabled={submitDisabled || !usernameAvailable}
-          className="bg-green-500 py-1 px-2 mt-3 rounded shadow-md text-white text-lg block w-full"
+          className="bg-green-500 py-1 px-2 mt-3 rounded relative shadow-md text-white text-lg block w-full"
         >
           {formLoading && (
             <span className="absolute right-0 inset-y-0 flex items-center pr-3">

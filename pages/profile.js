@@ -39,7 +39,7 @@ const Profile = () => {
 
           <label
             htmlFor="name"
-            className="relative text-gray-400 focus-within:text-gray-400 block"
+            className="relative text-red-400 focus-within:text-red-400 block"
           >
             <AiFillYoutube className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
@@ -51,7 +51,7 @@ const Profile = () => {
 
           <label
             htmlFor="name"
-            className="relative text-gray-400 focus-within:text-gray-400 block"
+            className="relative text-pink-400 focus-within:text-pink-400 block"
           >
             <AiFillInstagram className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
@@ -63,7 +63,7 @@ const Profile = () => {
 
           <label
             htmlFor="name"
-            className="relative text-gray-400 focus-within:text-gray-400 block"
+            className="relative text-blue-400 focus-within:text-blue-400 block"
           >
             <AiFillFacebook className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
