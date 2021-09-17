@@ -1,6 +1,8 @@
 const catchErrors = (error) => {
   let errorMsg = "";
 
+  console.log("error", error);
+
   if (error.response) {
     errorMsg = error.response.data.msg;
     console.error(errorMsg);

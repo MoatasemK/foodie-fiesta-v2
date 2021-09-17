@@ -12,18 +12,20 @@ router.get("/:username", async (req, res) => {
   const username = req.params.username;
 
   try {
-    if (username.length < 1) return res.status(401).json({ msg: "Invalid" });
+    if (username.length < 1)
+      return res.status(401).json({ msg: "Invalid username" });
 
     if (!usernameRegex.test(username))
-      return res.status(401).json({ msg: "Invalid" });
+      return res.status(401).json({ msg: "Invalid username" });
 
     const user = await User.findOne({ username: username.toLowerCase() });
 
-    if (user) return res.status(401).send("username already taken");
+    if (user) return res.status(401).json({ msg: "Username is already taken" });
 
     return res.status(200).json({ msg: "Username available" });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
@@ -32,13 +34,13 @@ router.post("/", async (req, res) => {
 
   try {
     if (password.length < 6) {
-      return res.status(401).send("Password should be greater than 6");
+      return res.status(401).json({ msg: "Password should be greater than 6" });
     }
 
     let user = await User.findOne({ email: email.toLowerCase() });
 
     if (user) {
-      return res.status(401).send("User exists");
+      return res.status(401).json({ msg: "Email exists" });
     }
 
     user = new User({
@@ -68,6 +70,7 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     console.log("server error");
+    return res.status(500).json({ msg: "Server error" });
   }
 });
 

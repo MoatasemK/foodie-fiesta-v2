@@ -9,7 +9,7 @@ import Image from "next/image";
 const Profile = () => {
   return (
     <div className="bg-green-100 min-h-screen">
-      <div className="flex flex-col items-center justify-center py-10">
+      <div className="flex flex-col items-center justify-center py-16">
         <form className="bg-white text-center relative bg-white w-1/3 rounded shadow-lg px-4">
           <Image
             height="80"

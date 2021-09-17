@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { AiFillEye, AiFillEyeInvisible, AiFillLock } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiFillEyeInvisible,
+  AiFillLock,
+  AiOutlineLoading,
+} from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -12,6 +17,13 @@ const Signin = () => {
   const [formLoading, setFormLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const isUser = Object.values({ email, password }).every((item) =>
+      Boolean(item)
+    );
+    isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
+  }, [user]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -79,8 +91,17 @@ const Signin = () => {
 
         <button
           type="submit"
+          disabled={submitDisabled}
           className="bg-green-500 py-1 px-2 mt-3 rounded shadow-md text-white text-lg block w-full"
         >
+          {formLoading && (
+            <span className="absolute right-0 inset-y-0 flex items-center pr-3">
+              <AiOutlineLoading
+                className="h-5 w-5 text-gray-100 animate-spin"
+                aria-hidden="true"
+              />
+            </span>
+          )}
           Sign In
         </button>
       </form>

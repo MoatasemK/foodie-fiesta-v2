@@ -4,7 +4,6 @@ import Image from "next/image";
 const Navbar = ({ user }) => {
   return (
     <nav className="flex justify-between shadow-md">
-      {console.log(user)}
       <h2 className="text-3xl p-3 text-green-500 font-bold ">HII</h2>
       <div className="flex items-center px-3">
         {user ? (
@@ -31,7 +30,6 @@ const Navbar = ({ user }) => {
           </>
         ) : (
           <>
-            {" "}
             <Link href="">
               <p className="text-green-500 hover:text-green-600  text-lg px-3 cursor-pointer">
                 Home
