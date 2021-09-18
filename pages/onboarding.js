@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   AiOutlineUser,
   AiFillYoutube,
@@ -7,6 +9,10 @@ import {
 import Image from "next/image";
 
 const Profile = () => {
+  const [bio, setBio] = useState("");
+  const [youtube, setYoutube] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [facebook, setFacebook] = useState("");
   return (
     <div className="bg-green-100 min-h-screen">
       <div className="flex flex-col items-center justify-center py-16">
@@ -29,6 +35,8 @@ const Profile = () => {
             <input
               type="text"
               placeholder="Bio"
+              name="bio"
+              value={bio}
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
           </label>
@@ -44,6 +52,8 @@ const Profile = () => {
             <AiFillYoutube className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
               type="text"
+              name="youtube"
+              value={youtube}
               placeholder="Youtube"
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
@@ -56,6 +66,8 @@ const Profile = () => {
             <AiFillInstagram className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
               type="text"
+              type="instagram"
+              value={instagram}
               placeholder="Instagram"
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
@@ -68,10 +80,13 @@ const Profile = () => {
             <AiFillFacebook className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
               type="text"
+              name="facebook"
+              value={facebook}
               placeholder="Facebook"
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
           </label>
+          <input type="file" />
           <button className="bg-green-500 w-full py-2 rounded shadow-md my-3 text-white">
             CREATE PROFILE
           </button>
