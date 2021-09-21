@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const router = express.Router();
+const sendEmail = require("../utilServer/sendEmail");
 
 const User = require("../models/user.model");
 
@@ -52,7 +53,29 @@ router.post("/", async (req, res) => {
 
     user.password = await bcrypt.hash(password, 10);
 
-    await user.save();
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    user.verificationToken = crypto
+      .createHash("sha256")
+      .update(verificationToken)
+      .digest("hex");
+
+    const verificationUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/onboarding/${verificationToken}`;
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Foodie Fiesta - Account Verification",
+        html: `<p>Please confirm your Foodie Fiesta account registration by visiting this URL and completing the onboarding process: ${verificationUrl}</p>`,
+      });
+      await user.save();
+    } catch (err) {
+      console.log(err);
+      user.verificationToken = undefined;
+      await user.save();
+      return res.status(500).json({ msg: "Error sending verification email" });
+    }
 
     const payload = { userId: user._id };
     jwt.sign(
@@ -64,7 +87,10 @@ router.post("/", async (req, res) => {
       (err, token) => {
         if (err) throw err;
 
-        res.status(200).json(token);
+        res.status(200).json({
+          msg: "Please verify your email to verify your registration",
+          token,
+        });
       }
     );
   } catch (err) {

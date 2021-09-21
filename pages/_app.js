@@ -17,8 +17,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   let pageProps = {};
 
-  const protectedRoutes =
-    ctx.pathname === "/create" || ctx.pathname === "/onboarding";
+  const protectedRoutes = ctx.pathname === "/create";
 
   const availableForEveryone = ctx.pathname === "/";
 

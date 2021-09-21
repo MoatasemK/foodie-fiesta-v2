@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
 
+    profilePicUrl: {
+      type: String,
+    },
     newMessagePopUp: {
       type: Boolean,
       default: true,

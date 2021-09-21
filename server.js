@@ -15,6 +15,7 @@ connectDB();
 nextApp.prepare().then(() => {
   app.use("/api/signup", require("./api/signup"));
   app.use("/api/auth", require("./api/auth"));
+  app.use("/api/onboarding", require("./api/onboarding"));
 
   app.all("*", (req, res) => handle(req, res));
   server.listen(PORT, (err) => {

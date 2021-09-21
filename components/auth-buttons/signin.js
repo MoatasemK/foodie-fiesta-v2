@@ -1,13 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   AiFillEye,
   AiFillEyeInvisible,
   AiFillLock,
   AiOutlineLoading,
 } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-
 import { loginUser } from "../../utils/auth.utils";
 
 const Signin = () => {
@@ -15,25 +14,24 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   useEffect(() => {
     const isUser = Object.values({ email, password }).every((item) =>
       Boolean(item)
     );
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
-  }, [user]);
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    setFormLoading(true);
     await loginUser({ email, password }, setError, setFormLoading, toast);
   };
 
   return (
     <>
-      <ToastContainer />
       <form onSubmit={onSubmit} className="px-3 py-4 h-1/2">
         <label
           htmlFor="email"

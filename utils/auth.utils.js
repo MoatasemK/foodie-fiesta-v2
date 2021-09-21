@@ -17,8 +17,7 @@ export const registerUser = async (
       password,
     });
 
-    setToken(res.data);
-    toast.info("Sign up successful");
+    toast.info(res.data.msg);
     Router.push("/");
   } catch (error) {
     const errorMsg = catchErrors(error);

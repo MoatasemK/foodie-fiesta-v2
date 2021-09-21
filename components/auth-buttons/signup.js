@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { CgDanger } from "react-icons/cg";
 import { HiOutlineDotsCircleHorizontal } from "react-icons/hi";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 import { registerUser } from "../../utils/auth.utils";
@@ -99,7 +99,6 @@ const SignUp = () => {
   };
   return (
     <>
-      <ToastContainer />
       <form className="px-3 py-4 h-1/2" onSubmit={onSubmit}>
         <label
           htmlFor="name"

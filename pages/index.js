@@ -1,8 +1,13 @@
 import FoodCard from "../components/food-card/FoodCard.component";
+import Router from "next/router";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {}, []);
   return (
     <div className="bg-gray-50 min-h-screen">
+      <ToastContainer />
       <div className="text-center py-3">
         <input
           placeholder="Search"
