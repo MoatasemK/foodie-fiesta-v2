@@ -12,7 +12,6 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "foodie-fiesta",
-    upload_preset: "foodie-fiesta",
   },
 });
 

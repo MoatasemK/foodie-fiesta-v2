@@ -6,6 +6,7 @@ import {
   AiFillYoutube,
   AiFillInstagram,
   AiFillFacebook,
+  AiOutlineLoading,
 } from "react-icons/ai";
 import Image from "next/image";
 import { onboarding } from "../../utils/onboarding.utils";
@@ -19,26 +20,22 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [bio, setBio] = useState("");
-  const [submitDisabled, setSubmitDisabled] = useState(false);
   const [youtube, setYoutube] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
-  const [image, seImage] = useState(null);
-
-  useEffect(() => {
-    const isUser = Object.values({
-      bio,
-    }).every((item) => Boolean(item));
-    isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
-  }, []);
+  const [image, setImage] = useState(null);
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    alert(1);
+    console.log("hello");
+    e.preventDefault();
+    alert("yes1");
     setLoading(true);
-
     if (bio === "") {
       toast.error("Please enter bio");
     } else {
+      console.log("set1");
       const formdata = new FormData();
       formdata.append("profilePic", image);
       formdata.append("bio", bio);
@@ -50,20 +47,20 @@ const Profile = () => {
   };
   return (
     <div className="bg-green-100 min-h-screen">
-      <div className="flex flex-col items-center justify-center py-16">
+      <div className="flex flex-col items-center relative justify-center py-16">
         <form
           onSubmit={onSubmit}
-          className="bg-white text-center relative bg-white w-1/3 rounded shadow-lg px-4"
+          className="bg-white text-center bg-white w-1/3 rounded shadow-lg px-4"
         >
           <Image
-            height="80"
-            width="80"
+            height="100"
+            width="100"
             src={
               image
                 ? URL.createObjectURL(image)
                 : "https://www.gravatar.com/avatar/4f28f38e798f29c5d75b85c883327d09?d=mm&r=g&s=190"
             }
-            className="rounded-full transform absolute -top-100 left-0"
+            className="rounded-full absolute transform -translate-y-50 -translate-x-50 -top-100 left-0"
           />
           <h2 className="text-green-500 text-4xl font-semibold my-3">
             Create your profile
@@ -132,16 +129,18 @@ const Profile = () => {
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
           </label>
+
           <input
             type="file"
+            className="my-2"
             onChange={(e) => setImage(e.target.files[0])}
             accept="image/*"
-            hidden
           />
           <button
             type="submit"
-            disabled={submitDisabled}
-            className="bg-green-500 w-full py-2 rounded shadow-md my-3 text-white"
+            onClick={() => alert(1)}
+            disabled={bio === ""}
+            className="bg-green-500 w-full my-5 py-2 rounded shadow-md my-3 text-white"
           >
             {loading && (
               <span className="absolute right-0 inset-y-0 flex items-center pr-3">

@@ -29,7 +29,7 @@ router.post("/:token", upload.single("profilePic"), async (req, res) => {
     await user.save();
 
     let profileFields = {
-      user: req.userId,
+      user: user._id,
       bio: bio,
       socials: {
         youtube: youtube,
@@ -43,7 +43,7 @@ router.post("/:token", upload.single("profilePic"), async (req, res) => {
     await profile.save();
     return res.status(200).json({ msg: "Profile create successfully" });
   } catch (error) {
-    console.error(err);
+    console.error(error);
     res.status(500).json({ msg: "Server error" });
   }
 });
