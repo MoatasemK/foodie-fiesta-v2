@@ -26,7 +26,9 @@ const Signin = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    alert(1);
     setFormLoading(true);
+    alert(2);
     await loginUser({ email, password }, setError, setFormLoading, toast);
   };
 
