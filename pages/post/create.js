@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Editor from "../components/Editor.component";
+import Editor from "../../components/Editor.component";
 import { AiFillYoutube, AiFillInstagram } from "react-icons/ai";
-import ThumbnailsDND from "../components/posts/new-post/ThumbnailDND";
+import ImageDropzone from "../../components/posts/new-post/ImageDropZone";
+import ThumbnailsDND from "../../components/posts/new-post/ThumbnailDND";
 
 const Create = () => {
   const [editorLoaded, setEditorLoaded] = useState(false);
@@ -61,24 +62,12 @@ const Create = () => {
           </label>
         </div>
 
-        <div className="bg-white rounded-lg pb-4 my-3">
-          <h2 className="text-green-600 text-xl text-left px-3 py-4 font-semibold">
-            You can upload only 4 photos
-          </h2>
-          <div className="text-left px-3 py-2">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              multiple
-            />
-          </div>
-          {images?.length > 0 && (
-            <ThumbnailsDND images={images} setImages={setImages} />
-          )}
-        </div>
+        <ImageDropzone setImages={setImages} />
+        {images?.length > 0 && (
+          <ThumbnailsDND images={images} setImages={setImages} />
+        )}
 
-        <div className="my-5">
+        <div className="my-8">
           <h3 className="text-left my-1 font-semibold text-green-600 text-lg">
             Select your category
           </h3>

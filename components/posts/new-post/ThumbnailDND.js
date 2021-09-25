@@ -10,7 +10,7 @@ const ThumbnailsDND = ({ images, setImages }) => {
   }
 
   return (
-    <div className="my-6 max-w-lg">
+    <div className="my-6 max-w-xl">
       <h3 className="text-xl mb-1 font-semibold text-green-600">
         Arrange Images
       </h3>
@@ -37,7 +37,7 @@ const ThumbnailsDND = ({ images, setImages }) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       src={URL.createObjectURL(image)}
-                      className="w-full h-full mx-2 rounded-lg shadow cursor-pointer"
+                      className="w-100 h-100 mx-2 rounded-lg shadow cursor-pointer"
                     />
                   )}
                 </Draggable>
