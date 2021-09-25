@@ -6,15 +6,27 @@ import ThumbnailsDND from "../../components/posts/new-post/ThumbnailDND";
 
 const Create = () => {
   const [editorLoaded, setEditorLoaded] = useState(false);
-  const [images, setImages] = useState([]);
 
+  const [title, setTitle] = useState("");
+  const [youtube, setYoutube] = useState("");
+  const [instagram, setInsagram] = useState("");
+  const [category, setCategory] = useState([]);
+  const [images, setImages] = useState([]);
   const [data, setData] = useState("");
 
-  const handleImageChange = (e) => {
-    for (let i = 0; i < e.target.files.length; i++) {
-      const newImage = e.target.files[i];
+  const addToCategory = (value) => {
+    setCategory([...category, value]);
+  };
 
-      setImages((prevState) => [...prevState, newImage]);
+  const removeTrackCategory = (value) => {
+    setCategory(category.filter((val) => val !== value));
+  };
+
+  const onChangeCategory = (e) => {
+    if (category.includes(e.currentTarget.value)) {
+      removeTrackCategory(e.currentTarget.value);
+    } else {
+      addToCategory(e.currentTarget.value);
     }
   };
 
@@ -22,16 +34,25 @@ const Create = () => {
     setEditorLoaded(true);
   }, []);
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(images);
+    console.log(title, youtube, instagram, category, data);
+  };
+
   return (
     <div className="min-h-screen bg-green-100 flex flex-col py-10 items-center">
       <h2 className="text-green-600 text-4xl text-center font-semibold">
         Add your item
       </h2>
-      <div className="text-center my-6">
+      <form className="text-center my-6" onSubmit={onSubmit}>
         <input
           type="text"
           className="focus:outline-none rounded w-full py-2 px-2 border-green-500"
           placeholder="Title"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <div className="grid grid-cols-2 gap-x-4 my-4">
@@ -44,6 +65,8 @@ const Create = () => {
               type="text"
               name="youtube"
               placeholder="Youtube link"
+              value={youtube}
+              onChange={(e) => setYoutube(e.target.value)}
               className="bg-white text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
           </label>
@@ -55,7 +78,9 @@ const Create = () => {
             <AiFillInstagram className="pointer-events-none w-6 h-6  absolute top-1/2 transform -translate-y-1/2 left-1" />
             <input
               type="text"
-              type="instagram"
+              name="instagram"
+              value={instagram}
+              onChange={(e) => setInsagram(e.target.value)}
               placeholder="Instagram link"
               className="bg-white text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             />
@@ -75,9 +100,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="veg"
+                name="veg"
+                value="veg"
+                onClick={onChangeCategory}
                 className="form-checkbox mx-1 text-green-500"
               />
               <label for="vehicle1" className="text-green-700">
@@ -88,9 +114,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="non-veg"
+                name="nonveg"
+                value="nonveg"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -101,9 +128,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="chinese"
+                name="chinese"
+                value="chinese"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -114,9 +142,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="Indian"
+                name="indian"
+                value="indian"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -126,9 +155,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="Italian"
+                name="italian"
+                value="italian"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -144,9 +174,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="healthy"
+                name="healthy"
+                value="healthy"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -156,9 +187,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="dessert"
+                name="dessert"
+                value="dessert"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -168,9 +200,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="Spicy"
+                name="spicy"
+                value="spicy"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -180,9 +213,10 @@ const Create = () => {
             <div>
               <input
                 type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                id="sweet"
+                name="sweet"
+                value="sweet"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -193,8 +227,9 @@ const Create = () => {
               <input
                 type="checkbox"
                 id="vehicle1"
-                name="vehicle1"
-                value="Bike"
+                name="made-with-love"
+                value="made-with-love"
+                onClick={onChangeCategory}
                 className="mx-1"
               />
               <label for="vehicle1" className="text-green-700">
@@ -212,10 +247,13 @@ const Create = () => {
           editorLoaded={editorLoaded}
         />
 
-        <button className="bg-green-600 py-2 mt-4 w-full text-white shadow-md rounded">
+        <button
+          type="submit"
+          className="bg-green-600 py-2 mt-4 w-full text-white shadow-md rounded"
+        >
           CREATE POST
         </button>
-      </div>
+      </form>
     </div>
   );
 };
