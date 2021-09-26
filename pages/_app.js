@@ -1,14 +1,23 @@
 import axios from "axios";
+import { useState } from "react";
 import { redirectUser } from "../utils/auth.utils";
 import Layout from "../components/layout/Layout.component";
+import { ToastContainer } from "react-toastify";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { parseCookies, destroyCookie } from "nookies";
+import "react-toastify/dist/ReactToastify.css";
 import "tailwindcss/tailwind.css";
 
 function MyApp({ Component, pageProps }) {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
-    <Layout {...pageProps}>
-      <Component {...pageProps} />
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <ToastContainer />
+      <Layout {...pageProps}>
+        <Component {...pageProps} />
+      </Layout>
+    </QueryClientProvider>
   );
 }
 

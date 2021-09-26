@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please enter your password"],
       select: false,
     },
-
     profilePicUrl: {
       type: String,
     },

@@ -8,7 +8,7 @@ const Navbar = ({ user }) => {
       <div className="flex items-center px-3">
         {user ? (
           <>
-            <Link href="/create">
+            <Link href="/post/create">
               <p className="text-green-500 hover:text-green-600 text-lg px-3 cursor-pointer">
                 Create
               </p>

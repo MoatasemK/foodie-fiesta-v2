@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
+import { toast, ToastContainer } from "react-toastify";
 import Editor from "../../components/Editor.component";
-import { AiFillYoutube, AiFillInstagram } from "react-icons/ai";
+import {
+  AiFillYoutube,
+  AiFillInstagram,
+  AiOutlineLoading,
+} from "react-icons/ai";
 import ImageDropzone from "../../components/posts/new-post/ImageDropZone";
 import ThumbnailsDND from "../../components/posts/new-post/ThumbnailDND";
+import baseURL from "../../utils/baseURL";
 
-const Create = () => {
+const Create = ({ user }) => {
+  const router = useRouter();
+
   const [editorLoaded, setEditorLoaded] = useState(false);
 
   const [title, setTitle] = useState("");
@@ -34,14 +46,42 @@ const Create = () => {
     setEditorLoaded(true);
   }, []);
 
-  const onSubmit = (e) => {
+  const mutation = useMutation(
+    async (formdata) =>
+      await axios.post(`${baseURL}/api/posts/`, formdata, {
+        headers: {
+          Authorization: cookie.get("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      })
+  );
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(images);
-    console.log(title, youtube, instagram, category, data);
+    const formdata = new FormData();
+
+    formdata.append("title", title);
+    formdata.append("description", data);
+    formdata.append("instagram", instagram);
+    formdata.append("youtube", youtube);
+    formdata.append("category", JSON.stringify(category));
+
+    for (const key of Object.keys(images)) {
+      formdata.append("images", images[key]);
+    }
+
+    try {
+      await mutation.mutateAsync(formdata);
+      toast.success("Post uploaded successfully");
+      router.push("/");
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Please recheck your inputs");
+    }
   };
 
   return (
     <div className="min-h-screen bg-green-100 flex flex-col py-10 items-center">
+      <ToastContainer />
       <h2 className="text-green-600 text-4xl text-center font-semibold">
         Add your item
       </h2>
@@ -249,9 +289,14 @@ const Create = () => {
 
         <button
           type="submit"
+          disabled={mutation.isLoading}
           className="bg-green-600 py-2 mt-4 w-full text-white shadow-md rounded"
         >
-          CREATE POST
+          {mutation.isLoading ? (
+            <AiOutlineLoading className="h-5 w-5 mr-2 animate-spin" />
+          ) : (
+            "CREATE POST"
+          )}
         </button>
       </form>
     </div>
