@@ -1,30 +1,41 @@
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { toast, ToastContainer } from "react-toastify";
-import Editor from "../../components/Editor.component";
 import {
   AiFillYoutube,
   AiFillInstagram,
+  AiFillDelete,
   AiOutlineLoading,
 } from "react-icons/ai";
-import ImageDropzone from "../../components/posts/new-post/ImageDropZone";
-import ThumbnailsDND from "../../components/posts/new-post/ThumbnailDND";
 import baseURL from "../../utils/baseURL";
+import { BiAddToQueue } from "react-icons/bi";
 
 const Create = ({ user }) => {
   const router = useRouter();
 
-  const [editorLoaded, setEditorLoaded] = useState(false);
+  const modules = {
+    toolbar: [["bold", "italic", "underline", "strike", "blockquote"]],
+  };
 
-  const [title, setTitle] = useState("");
+  const formats = ["bold", "italic", "underline", "strike", "blockquote"];
+
+  const [items, setItems] = useState([
+    {
+      title: "",
+      image: null,
+      description: "",
+    },
+  ]);
+
   const [youtube, setYoutube] = useState("");
   const [instagram, setInsagram] = useState("");
   const [category, setCategory] = useState([]);
-  const [images, setImages] = useState([]);
-  const [data, setData] = useState("");
 
   const addToCategory = (value) => {
     setCategory([...category, value]);
@@ -42,9 +53,34 @@ const Create = ({ user }) => {
     }
   };
 
-  useEffect(() => {
-    setEditorLoaded(true);
-  }, []);
+  const addItems = () => {
+    const values = [...items];
+    values.push({ value: null });
+    setItems(values);
+  };
+
+  const removeItems = (index) => {
+    const values = [...items];
+    values.splice(index, 1);
+    setItems(values);
+  };
+
+  const onItemChange = (i, event) => {
+    const values = [...items];
+
+    if (event.target.name === "description") {
+      values[i].description = event.target.value;
+    }
+
+    if (event.target.name === "title") {
+      values[i].title = event.target.value;
+    }
+
+    if (event.target.files) {
+      values[i].image = event.target.files[0];
+    }
+    setItems(values);
+  };
 
   const mutation = useMutation(
     async (formdata) =>
@@ -58,25 +94,27 @@ const Create = ({ user }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const formdata = new FormData();
 
-    formdata.append("title", title);
-    formdata.append("description", data);
-    formdata.append("instagram", instagram);
-    formdata.append("youtube", youtube);
-    formdata.append("category", JSON.stringify(category));
+    console.log(items);
+    // const formdata = new FormData();
 
-    for (const key of Object.keys(images)) {
-      formdata.append("images", images[key]);
-    }
+    // formdata.append("title", title);
+    // formdata.append("description", data);
+    // formdata.append("instagram", instagram);
+    // formdata.append("youtube", youtube);
+    // formdata.append("category", JSON.stringify(category));
 
-    try {
-      await mutation.mutateAsync(formdata);
-      toast.success("Post uploaded successfully");
-      router.push("/");
-    } catch (error) {
-      toast.error(error.response?.data?.msg || "Please recheck your inputs");
-    }
+    // for (const key of Object.keys(images)) {
+    //   formdata.append("images", images[key]);
+    // }
+
+    // try {
+    //   await mutation.mutateAsync(formdata);
+    //   toast.success("Post uploaded successfully");
+    //   router.push("/");
+    // } catch (error) {
+    //   toast.error(error.response?.data?.msg || "Please recheck your inputs");
+    // }
   };
 
   return (
@@ -86,14 +124,47 @@ const Create = ({ user }) => {
         Add your item
       </h2>
       <form className="text-center my-6" onSubmit={onSubmit}>
-        <input
-          type="text"
-          className="focus:outline-none rounded w-full py-2 px-2 border-green-500"
-          placeholder="Title"
-          name="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        {items.map((item, index) => (
+          <div className="my-8">
+            <input
+              type="text"
+              className="focus:outline-none rounded w-full py-2 px-2 my-3 border-green-500"
+              placeholder="Title"
+              name="title"
+              value={item.title}
+              onChange={(e) => onItemChange(index, e)}
+            />
+
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={item.description}
+              onChange={(e) => onItemChange(index, e)}
+              className="focus:outline-none bg-white mb-3 px-2 py-4 w-full h-full"
+            />
+
+            <div className="text-left">
+              <h3 className=" text-green-600 text-lg my-1">
+                Choose your image
+              </h3>
+              <input type="file" onChange={(e) => onItemChange(index, e)} />
+            </div>
+            <div className="text-left my-2">
+              <button
+                onClick={() => addItems()}
+                className="bg-green-600  px-4 w-1/8  py-2 mr-2 rounded shadow-md text-white font-semibold text-md"
+              >
+                Add Step
+              </button>
+              <button
+                onClick={() => removeItems(index)}
+                className="bg-green-600 px-4 w-1/8 py-2 rounded shadow-md text-white font-semibold text-md"
+              >
+                Delete Step
+              </button>
+            </div>
+          </div>
+        ))}
 
         <div className="grid grid-cols-2 gap-x-4 my-4">
           <label
@@ -126,11 +197,6 @@ const Create = ({ user }) => {
             />
           </label>
         </div>
-
-        <ImageDropzone setImages={setImages} />
-        {images?.length > 0 && (
-          <ThumbnailsDND images={images} setImages={setImages} />
-        )}
 
         <div className="my-8">
           <h3 className="text-left my-1 font-semibold text-green-600 text-lg">
@@ -278,14 +344,6 @@ const Create = ({ user }) => {
             </div>
           </div>
         </div>
-
-        <Editor
-          name="description"
-          onChange={(data) => {
-            setData(data);
-          }}
-          editorLoaded={editorLoaded}
-        />
 
         <button
           type="submit"

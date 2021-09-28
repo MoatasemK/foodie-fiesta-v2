@@ -10,12 +10,21 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { loginUser } from "../../utils/auth.utils";
 
 const Signin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setUser((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+  };
+
   const [error, setError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  const { email, password } = user;
 
   useEffect(() => {
     const isUser = Object.values({ email, password }).every((item) =>
@@ -26,9 +35,10 @@ const Signin = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    alert(1);
+    console.log(submitDisabled);
+
     setFormLoading(true);
-    alert(2);
+
     await loginUser({ email, password }, setError, setFormLoading, toast);
   };
 
@@ -47,7 +57,7 @@ const Signin = () => {
             className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
             placeholder="Email"
             name="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange}
             value={email}
           />
         </label>
@@ -83,7 +93,7 @@ const Signin = () => {
               className="bg-gray-200 text-gray-400 py-2 px-8 w-full rounded my-2 focus:outline-none"
               placeholder="Password"
               name="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               value={password}
             />
           </div>

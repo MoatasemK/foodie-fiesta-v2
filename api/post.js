@@ -34,4 +34,18 @@ router.post("/", auth, upload.array("images", 5), async (req, res) => {
   }
 });
 
+// method: GET
+// desc: Get post
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const data = await Post.find({});
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server Error" });
+  }
+});
+
 module.exports = router;
