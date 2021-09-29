@@ -7,10 +7,21 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    title: {
-      type: String,
-      required: true,
-    },
+    steps: [
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+        image: {
+          type: String,
+        },
+        description: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     youtube: {
       type: String,
     },
@@ -18,14 +29,6 @@ const postSchema = new mongoose.Schema(
       type: String,
     },
     category: {
-      type: [String],
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    images: {
       type: [String],
       required: true,
     },

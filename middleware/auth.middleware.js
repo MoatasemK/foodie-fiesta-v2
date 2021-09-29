@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
     if (!req.headers.authorization) {
       return res.status(401).json({ msg: "Unauthorized" });
     }
+
     const { userId } = jwt.verify(
       req.headers.authorization,
       process.env.JWT_SECRET
@@ -13,6 +14,7 @@ module.exports = (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
+
     res.status(401).json({ msg: "Unauthorized" });
   }
 };

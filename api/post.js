@@ -7,22 +7,16 @@ const router = express.Router();
 // method: POST
 // desc: Create post
 
-router.post("/", auth, upload.array("images", 5), async (req, res) => {
-  const { title, youtube, instagram, description, category } = req.body;
+router.post("/", auth, async (req, res) => {
+  const { youtube, instagram, category } = req.body;
 
   try {
-    if (req.files.length < 1) {
-      return res.status(400).json({ msg: "Please upload at least 1 image" });
-    }
-
     let post = new Post({
       user: req.userId,
-      title: title,
+      steps: [],
       youtube: youtube,
       instagram: instagram,
-      description: description,
       category: JSON.parse(category),
-      images: req.files.map((file) => file.path),
     });
 
     await post.save();

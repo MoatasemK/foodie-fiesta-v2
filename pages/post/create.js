@@ -36,6 +36,7 @@ const Create = ({ user }) => {
   const [youtube, setYoutube] = useState("");
   const [instagram, setInsagram] = useState("");
   const [category, setCategory] = useState([]);
+  const [info, setInfo] = useState("");
 
   const addToCategory = (value) => {
     setCategory([...category, value]);
@@ -95,26 +96,15 @@ const Create = ({ user }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(items);
-    // const formdata = new FormData();
+    console.log(items, youtube, instagram, category, info);
 
-    // formdata.append("title", title);
-    // formdata.append("description", data);
-    // formdata.append("instagram", instagram);
-    // formdata.append("youtube", youtube);
-    // formdata.append("category", JSON.stringify(category));
-
-    // for (const key of Object.keys(images)) {
-    //   formdata.append("images", images[key]);
-    // }
-
-    // try {
-    //   await mutation.mutateAsync(formdata);
-    //   toast.success("Post uploaded successfully");
-    //   router.push("/");
-    // } catch (error) {
-    //   toast.error(error.response?.data?.msg || "Please recheck your inputs");
-    // }
+    try {
+      await mutation.mutateAsync(formdata);
+      toast.success("Post uploaded successfully");
+      router.push("/");
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Please recheck your inputs");
+    }
   };
 
   return (
@@ -344,6 +334,14 @@ const Create = ({ user }) => {
             </div>
           </div>
         </div>
+        <ReactQuill
+          theme="snow"
+          value={info}
+          onChange={(info) => setInfo(info)}
+          className="bg-white mb-8 w-full h-full"
+          modules={modules}
+          formats={formats}
+        />
 
         <button
           type="submit"

@@ -28,12 +28,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   const protectedRoutes = ctx.pathname === "/post/create";
 
-  const availableForEveryone = ctx.pathname === "/";
+  const availableForEveryone =
+    ctx.pathname === "/" || ctx.pathname === "/[username]";
 
-  // If user is not logged in
   if (!token) {
     destroyCookie(ctx, "token");
-    // Redirect to login if user is trying to access protected routes
+
     protectedRoutes && redirectUser(ctx, "/auth");
   } else {
     try {
@@ -41,8 +41,6 @@ MyApp.getInitialProps = async ({ ctx }) => {
         headers: { Authorization: token },
       });
       const { user } = res.data;
-
-      console.log("user", user);
 
       if (user && !availableForEveryone) {
         !protectedRoutes && redirectUser(ctx, "/");
