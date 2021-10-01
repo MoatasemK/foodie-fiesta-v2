@@ -15,6 +15,7 @@ import {
 } from "react-icons/ai";
 import baseURL from "../../utils/baseURL";
 import { BiAddToQueue } from "react-icons/bi";
+import upload from "../../utils/upload.utils";
 
 const Create = ({ user }) => {
   const router = useRouter();
@@ -29,6 +30,7 @@ const Create = ({ user }) => {
     {
       title: "",
       image: null,
+      url: "",
       description: "",
     },
   ]);
@@ -83,26 +85,36 @@ const Create = ({ user }) => {
     setItems(values);
   };
 
-  const mutation = useMutation(
-    async (formdata) =>
-      await axios.post(`${baseURL}/api/posts/`, formdata, {
+  const mutation = useMutation(async () => {
+    console.log("items", items);
+    await axios.post(
+      `${baseURL}/api/posts/`,
+      { items, youtube, instagram, info, category },
+      {
         headers: {
           Authorization: cookie.get("token"),
-          "Content-Type": "multipart/form-data",
         },
-      })
-  );
+      }
+    );
+  });
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(items, youtube, instagram, category, info);
-
     try {
-      await mutation.mutateAsync(formdata);
+      items.map((item) => {
+        upload(item.image)
+          .then((data) => {
+            item.url = data;
+          })
+          .catch((err) => console.log(err));
+      });
+
+      await mutation.mutateAsync();
       toast.success("Post uploaded successfully");
       router.push("/");
     } catch (error) {
+      console.log(error);
       toast.error(error.response?.data?.msg || "Please recheck your inputs");
     }
   };
@@ -216,7 +228,7 @@ const Create = ({ user }) => {
                 onClick={onChangeCategory}
                 className="mx-1"
               />
-              <label for="vehicle1" className="text-green-700">
+              <label htmlFor="vehicle1" className="text-green-700">
                 Non Veg
               </label>
             </div>
@@ -230,7 +242,7 @@ const Create = ({ user }) => {
                 onClick={onChangeCategory}
                 className="mx-1"
               />
-              <label for="vehicle1" className="text-green-700">
+              <label htmlFor="vehicle1" className="text-green-700">
                 Chinese
               </label>
             </div>

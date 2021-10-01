@@ -34,6 +34,7 @@ export const loginUser = async (
   toast
 ) => {
   try {
+    console.log("sign in");
     const res = await axios.post(`http://localhost:3000/api/auth`, {
       email,
       password,

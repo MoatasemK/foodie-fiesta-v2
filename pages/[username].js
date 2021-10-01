@@ -1,10 +1,9 @@
-import { Fragment, useState } from "react";
+import { AiOutlineYoutube, AiOutlineInstagram } from "react-icons/ai";
+import { FaFacebookF } from "react-icons/fa";
+import FoodCard from "../components/food-card/FoodCard.component";
 
-const tabs = [
-  { name: "Profile", href: "#", current: true },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Recognition", href: "#", current: false },
-];
+import { useState } from "react";
+
 const profile = {
   name: "Ricardo Cooper",
   imageUrl:
@@ -15,16 +14,6 @@ const profile = {
     <p>Tincidunt quam neque in cursus viverra orci, dapibus nec tristique. Nullam ut sit dolor consectetur urna, dui cras nec sed. Cursus risus congue arcu aenean posuere aliquam.</p>
     <p>Et vivamus lorem pulvinar nascetur non. Pulvinar a sed platea rhoncus ac mauris amet. Urna, sem pretium sit pretium urna, senectus vitae. Scelerisque fermentum, cursus felis dui suspendisse velit pharetra. Augue et duis cursus maecenas eget quam lectus. Accumsan vitae nascetur pharetra rhoncus praesent dictum risus suspendisse.</p>
   `,
-  fields: {
-    Phone: "(555) 123-4567",
-    Email: "ricardocooper@example.com",
-    Title: "Senior Front-End Developer",
-    Team: "Product Development",
-    Location: "San Francisco",
-    Sits: "Oasis, 4th floor",
-    Salary: "$145,000",
-    Birthday: "June 8, 1990",
-  },
 };
 
 const team = [
@@ -58,18 +47,13 @@ const team = [
   },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-export default function Example() {
+export default function Example({ user }) {
+  const [selectedTab, setSelectedTab] = useState("posts");
   return (
     <div className="relative h-screen flex overflow-hidden bg-white">
       <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
         <div className="flex-1 relative z-0 flex overflow-hidden">
           <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
-            {/* Breadcrumb */}
-
             <article>
               <div>
                 <div>
@@ -84,28 +68,34 @@ export default function Example() {
                     <div className="flex">
                       <img
                         className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                        src={profile.imageUrl}
+                        src={user?.profilePicUrl}
                         alt=""
                       />
                     </div>
                     <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                       <div className="sm:hidden 2xl:block mt-6 min-w-0 flex-1">
-                        <h1 className="text-2xl font-bold text-gray-900 truncate">
-                          {profile.name}
+                        <h1 className="text-2xl  font-bold text-green-500 truncate">
+                          {user?.name}
                         </h1>
                       </div>
                       <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                         <button
                           type="button"
-                          className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                          className="flex items-center text-red-500 justify-center rounded-full p-2 border border-red-500 shadow-sm text-sm font-medium  bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                         >
-                          <span>Message</span>
+                          <AiOutlineYoutube className="text-xl" />
                         </button>
                         <button
                           type="button"
-                          className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                          className="flex text-purple-500 items-center justify-center p-2 border border-purple-500 shadow-sm text-sm font-medium rounded-full  bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                         >
-                          <span>Call</span>
+                          <AiOutlineInstagram className="text-xl" />
+                        </button>
+                        <button
+                          type="button"
+                          className="flex items-center text-blue-500 justify-center rounded-full p-2 border border-blue-500 shadow-sm text-sm font-medium  bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                        >
+                          <FaFacebookF className="text-xl" />
                         </button>
                       </div>
                     </div>
@@ -118,89 +108,63 @@ export default function Example() {
                 </div>
               </div>
 
-              {/* Tabs */}
               <div className="mt-6 sm:mt-2 2xl:mt-5">
                 <div className="border-b border-gray-200">
                   <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-                      {tabs.map((tab) => (
-                        <a
-                          key={tab.name}
-                          href={tab.href}
-                          className={classNames(
-                            tab.current
-                              ? "border-pink-500 text-gray-900"
-                              : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                            "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                          )}
-                          aria-current={tab.current ? "page" : undefined}
-                        >
-                          {tab.name}
-                        </a>
-                      ))}
+                    <nav className="-mb-px flex space-x-8 ">
+                      <button
+                        className={
+                          selectedTab === "posts"
+                            ? "text-lg font-semibold border-b-2 border-green-500"
+                            : "text-lg text-gray-500"
+                        }
+                        onClick={() => setSelectedTab("posts")}
+                      >
+                        Posts
+                      </button>
+                      <button
+                        onClick={() => setSelectedTab("about")}
+                        className={
+                          selectedTab === "about"
+                            ? "text-lg font-semibold border-b-2 border-green-600"
+                            : "text-lg text-gray-500"
+                        }
+                      >
+                        About
+                      </button>
                     </nav>
                   </div>
                 </div>
               </div>
 
-              {/* Description list */}
-              <div className="mt-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                  {Object.keys(profile.fields).map((field) => (
-                    <div key={field} className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {field}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900">
-                        {profile.fields[field]}
-                      </dd>
+              <div className="">
+                {selectedTab === "posts" && (
+                  <div className="max-w-5xl mx-auto px-4 my-6">
+                    <div className="flex justify-left space-x-4 my-3">
+                      <FoodCard />
+                      <FoodCard />
+                      <FoodCard />
                     </div>
-                  ))}
-                  <div className="sm:col-span-2">
-                    <dt className="text-sm font-medium text-gray-500">About</dt>
-                    <dd
-                      className="mt-1 max-w-prose text-sm text-gray-900 space-y-5"
-                      dangerouslySetInnerHTML={{ __html: profile.about }}
-                    />
                   </div>
-                </dl>
-              </div>
-
-              {/* Team member list */}
-              <div className="mt-8 max-w-5xl mx-auto px-4 pb-12 sm:px-6 lg:px-8">
-                <h2 className="text-sm font-medium text-gray-500">
-                  Team members
-                </h2>
-                <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {team.map((person) => (
-                    <div
-                      key={person.handle}
-                      className="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pink-500"
-                    >
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src={person.imageUrl}
-                          alt=""
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <a href="#" className="focus:outline-none">
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          />
-                          <p className="text-sm font-medium text-gray-900">
-                            {person.name}
-                          </p>
-                          <p className="text-sm text-gray-500 truncate">
-                            {person.role}
-                          </p>
-                        </a>
-                      </div>
+                )}
+                {selectedTab === "about" && (
+                  <div className="max-w-5xl mx-auto px-4 my-6">
+                    <div className="flex justify-left items-center space-x-4">
+                      <a href="" className="text-lg text-gray-500">
+                        31 followers
+                      </a>
+                      <a href="" className="text-lg text-gray-500">
+                        25 following
+                      </a>
                     </div>
-                  ))}
-                </div>
+                    <div className="my-5">
+                      <h2 className="text-green-600 text-xl font-semibold">
+                        Bio
+                      </h2>
+                      <p>lorem </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </article>
           </main>
@@ -211,6 +175,6 @@ export default function Example() {
 }
 
 export function getServerSideProps() {
-  console.log("Username");
+  console.log("ysername");
   return { props: {} };
 }

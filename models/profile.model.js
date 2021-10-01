@@ -11,9 +11,6 @@ const profileSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profilePicUrl: {
-      type: String,
-    },
     social: {
       youtube: {
         type: String,

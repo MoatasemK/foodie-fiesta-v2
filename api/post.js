@@ -8,20 +8,21 @@ const router = express.Router();
 // desc: Create post
 
 router.post("/", auth, async (req, res) => {
-  const { youtube, instagram, category } = req.body;
+  // const { youtube, instagram, category } = req.body;
 
   try {
-    let post = new Post({
-      user: req.userId,
-      steps: [],
-      youtube: youtube,
-      instagram: instagram,
-      category: JSON.parse(category),
-    });
+    console.log("body", req.body);
+    // let post = new Post({
+    //   user: req.userId,
+    //   steps: [],
+    //   youtube: youtube,
+    //   instagram: instagram,
+    //   category: JSON.parse(category),
+    // });
 
-    await post.save();
+    // await post.save();
 
-    res.status(200).json(post);
+    // res.status(200).json(post);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Server Error" });
